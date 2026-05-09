@@ -1,6 +1,12 @@
 {
   "name": "cse340-course-repo",
   "version": "1.0.0",
+  "description": "CSE340 routing project",
+  "main": "server.js",
   "type": "module",
-  "main": "server.js"
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
 }
