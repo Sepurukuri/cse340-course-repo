@@ -11,12 +11,10 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// View engine
 app.set("view engine", "ejs");
 
 app.engine("ejs", (await import("ejs")).renderFile);
 
-// Static folder
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
@@ -44,7 +42,6 @@ app.get("/categories", (req, res) => {
     });
 });
 
-// Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://127.0.0.1:${PORT}`);
 });
