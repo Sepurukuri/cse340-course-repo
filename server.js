@@ -14,6 +14,8 @@ const __dirname = path.dirname(__filename);
 // View engine
 app.set("view engine", "ejs");
 
+app.engine("ejs", (await import("ejs")).renderFile);
+
 // Static folder
 app.use(express.static(path.join(__dirname, "public")));
 
