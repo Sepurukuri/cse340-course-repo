@@ -13,10 +13,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
- * Middleware
+ * Configure Express middleware
  */
 
-// Serve static files
+// Serve static files from public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 /**
