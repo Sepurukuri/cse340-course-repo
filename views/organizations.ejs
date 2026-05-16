@@ -1,48 +1,97 @@
-<%- include("partials/header") %>
+<%- include('partials/header') %>
 
-<section>
+<main class="organizations-page">
+    <h1>Our Partner Organizations</h1>
 
-    <h2>Organizations</h2>
+    <p>Here are a few of our partner organizations:</p>
 
-    <img src="public/images/Community.png" alt="Community Service" class="org-image">
+    <section class="organizations-list">
 
-    <div class="card-container">
+        <!-- Organization 1 -->
+        <article class="organization-card">
 
-        <div class="card">
+            <img
+                src="/images/brightfuture-logo.png"
+                alt="BrightFuture Builders logo"
+                class="organization-logo"
+                width="150"
+            >
 
-            <h3>Helping Hands</h3>
+            <div class="organization-info">
 
-            <p>
-                Supporting families and communities through
-                food drives, shelters, and volunteer programs.
-            </p>
+                <h2>BrightFuture Builders</h2>
 
-        </div>
+                <p class="organization-description">
+                    A nonprofit focused on improving community infrastructure
+                    through sustainable construction projects.
+                </p>
 
-        <div class="card">
+                <p class="organization-email">
+                    <strong>Contact Email:</strong>
+                    info@brightfuturebuilders.org
+                </p>
 
-            <h3>Green Earth</h3>
+            </div>
 
-            <p>
-                Focused on environmental sustainability,
-                recycling programs, and local clean-up initiatives.
-            </p>
+        </article>
 
-        </div>
+        <!-- Organization 2 -->
+        <article class="organization-card">
 
-        <div class="card">
+            <img
+                src="/images/greenharvest-logo.png"
+                alt="GreenHarvest Growers logo"
+                class="organization-logo"
+                width="150"
+            >
 
-            <h3>Bright Futures</h3>
+            <div class="organization-info">
 
-            <p>
-                Providing educational support and tutoring
-                opportunities for students of all ages.
-            </p>
+                <h2>GreenHarvest Growers</h2>
 
-        </div>
+                <p class="organization-description">
+                    An urban farming collective promoting food sustainability
+                    and education in local neighborhoods.
+                </p>
 
-    </div>
+                <p class="organization-email">
+                    <strong>Contact Email:</strong>
+                    contact@greenharvest.org
+                </p>
 
-</section>
+            </div>
 
-<%- include("partials/footer") %>
+        </article>
+
+        <!-- Organization 3 -->
+        <article class="organization-card">
+
+            <img
+                src="/images/unityserve-logo.png"
+                alt="UnityServe Volunteers logo"
+                class="organization-logo"
+                width="150"
+            >
+
+            <div class="organization-info">
+
+                <h2>UnityServe Volunteers</h2>
+
+                <p class="organization-description">
+                    A volunteer coordination group supporting local charities
+                    and service initiatives.
+                </p>
+
+                <p class="organization-email">
+                    <strong>Contact Email:</strong>
+                    hello@unityserve.org
+                </p>
+
+            </div>
+
+        </article>
+
+    </section>
+</main>
+
+<%- include('partials/footer') %>
