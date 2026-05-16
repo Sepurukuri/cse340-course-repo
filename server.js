@@ -1,10 +1,9 @@
+import 'dotenv/config';
+
 import { testConnection } from './src/models/db.js';
 import express from "express";
-import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -47,7 +46,7 @@ app.listen(PORT, async () => {
   try {
     await testConnection();
     console.log(`Server is running at http://127.0.0.1:${PORT}`);
-    console.log(`Environment: ${NODE_ENV}`);
+    console.log(`Environment: ${process.env.NODE_ENV}`);
   } catch (error) {
     console.error('Error connecting to the database:', error);
   }
