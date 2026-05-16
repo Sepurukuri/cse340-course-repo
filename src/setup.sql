@@ -130,3 +130,92 @@ VALUES
  'Organizing volunteers for seasonal charity events.',
  'El Paso, Texas',
  '2026-12-05');
+
+ -- ========================================
+-- Categories Table
+-- ========================================
+
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ========================================
+-- Project Categories Junction Table
+-- ========================================
+
+CREATE TABLE project_category (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+
+    PRIMARY KEY (project_id, category_id),
+
+    CONSTRAINT fk_project
+        FOREIGN KEY (project_id)
+        REFERENCES project(project_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_category
+        FOREIGN KEY (category_id)
+        REFERENCES category(category_id)
+        ON DELETE CASCADE
+);
+
+-- ========================================
+-- Insert Sample Categories
+-- ========================================
+
+INSERT INTO category (name)
+VALUES
+('Construction'),
+('Education'),
+('Environment'),
+('Community Service'),
+('Food Assistance');
+
+-- ========================================
+-- Associate Projects with Categories
+-- ========================================
+
+INSERT INTO project_category (project_id, category_id)
+VALUES
+
+-- BrightFuture Builders
+(1, 1),
+(1, 4),
+
+(2, 1),
+
+(3, 1),
+
+(4, 1),
+(4, 2),
+
+(5, 3),
+
+-- GreenHarvest Growers
+(6, 2),
+(6, 3),
+
+(7, 3),
+
+(8, 2),
+(8, 3),
+
+(9, 3),
+
+(10, 3),
+(10, 4),
+
+-- UnityServe Volunteers
+(11, 5),
+(11, 4),
+
+(12, 4),
+
+(13, 4),
+
+(14, 2),
+(14, 4),
+
+(15, 4);

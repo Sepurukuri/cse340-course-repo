@@ -296,6 +296,56 @@ footer {
     color: #2563eb;
 }
 
+/* =========================================
+   CATEGORIES PAGE
+========================================= */
+
+.categories-page {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.categories-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(250px, 1fr));
+
+    gap: 2rem;
+
+    margin-top: 3rem;
+}
+
+.category-card {
+    background: white;
+
+    padding: 2rem;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-6px);
+}
+
+.category-card h3 {
+    color: #2563eb;
+
+    margin-bottom: 1rem;
+
+    font-size: 1.4rem;
+}
+
+.category-card p {
+    color: #555;
+}
+
 /* ---------- RESPONSIVE ---------- */
 
 @media (max-width: 768px) {

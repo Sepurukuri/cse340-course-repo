@@ -6,6 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllProjects } from './src/models/projects.js';
+import { getAllCategories } from './src/models/categories.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -44,9 +45,14 @@ app.get('/projects', async (req, res) => {
     });
 });
 
-app.get("/categories", (req, res) => {
-    res.render("categories", {
-        title: "Categories"
+app.get('/categories', async (req, res) => {
+
+    const categories = await getAllCategories();
+    console.log(categories);
+    const title = 'Project Categories';
+    res.render('categories', {
+        title,
+        categories
     });
 });
 

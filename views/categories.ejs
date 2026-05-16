@@ -1,12 +1,39 @@
-<%- include("partials/header") %>
+<%- include('partials/header') %>
 
-<h2>Service Categories</h2>
+<main class="categories-page">
 
-<ul class="category-list">
-    <li>Environmental</li>
-    <li>Educational</li>
-    <li>Community Service</li>
-    <li>Health and Wellness</li>
-</ul>
+    <section class="hero">
 
-<%- include("partials/footer") %>
+        <h2>Service Project Categories</h2>
+
+        <p>
+            Browse the different categories of service projects
+            available through our community organizations.
+        </p>
+
+    </section>
+
+    <section class="categories-container">
+
+        <% categories.forEach(category => { %>
+
+            <article class="category-card">
+
+                <h3><%= category.name %></h3>
+
+                <p>
+                    Explore projects related to
+                    <strong><%= category.name %></strong>
+                    and discover opportunities to serve
+                    your community.
+                </p>
+
+            </article>
+
+        <% }) %>
+
+    </section>
+
+</main>
+
+<%- include('partials/footer') %>
