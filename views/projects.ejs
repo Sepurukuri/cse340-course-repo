@@ -1,11 +1,58 @@
-<%- include("partials/header") %>
+<%- include('partials/header') %>
 
-<h2>Service Projects</h2>
+<main class="projects-page">
 
-<ul class="project-list">
-    <li>Park Cleanup</li>
-    <li>Food Drive</li>
-    <li>Tutoring Program</li>
-</ul>
+    <section class="hero">
 
-<%- include("partials/footer") %>
+        <h2>Community Service Projects</h2>
+
+        <p>
+            Explore upcoming volunteer opportunities and
+            community improvement projects sponsored by
+            our partner organizations.
+        </p>
+
+    </section>
+
+    <section class="projects-container">
+
+        <% projects.forEach(project => { %>
+
+            <article class="project-card">
+
+                <div class="project-date">
+
+                    <%= new Date(project.project_date)
+                        .toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        })
+                    %>
+
+                </div>
+
+                <h3><%= project.title %></h3>
+
+                <p class="project-org">
+                    Sponsored by:
+                    <strong><%= project.organization_name %></strong>
+                </p>
+
+                <p class="project-description">
+                    <%= project.description %>
+                </p>
+
+                <p class="project-location">
+                    📍 <%= project.location %>
+                </p>
+
+            </article>
+
+        <% }) %>
+
+    </section>
+
+</main>
+
+<%- include('partials/footer') %>
