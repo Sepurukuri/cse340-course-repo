@@ -2,7 +2,7 @@
 
 <main class="organizations-page">
 
-    <h1>Our Partner Organizations</h1>
+    <h1><%= title %></h1>
 
     <p>
         We proudly collaborate with organizations dedicated to improving
@@ -12,125 +12,48 @@
 
     <section class="organizations-list">
 
-        <!-- Organization 1 -->
-        <article class="organization-card">
+        <% organizations.forEach(organization => { %>
 
-            <img
-                src="/images/brightfuture-logo.png"
-                alt="BrightFuture Builders logo"
-                class="organization-logo"
-                width="150"
-            >
+            <article class="organization-card">
 
-            <div class="organization-info">
+                <img
+                    src="/images/<%= organization.logo_filename %>"
+                    alt="<%= organization.name %> logo"
+                    class="organization-logo"
+                    width="150"
+                >
 
-                <h2>BrightFuture Builders</h2>
+                <div class="organization-info">
 
-                <p class="organization-description">
-                    BrightFuture Builders is a nonprofit organization focused on
-                    improving local communities through sustainable construction
-                    projects, affordable housing initiatives, and volunteer-led
-                    infrastructure development.
-                </p>
+                    <h2>
 
-                <p class="organization-email">
-                    <strong>Contact Email:</strong>
-                    info@brightfuturebuilders.org
-                </p>
+                        <a href="/organization/<%= organization.organization_id %>">
 
-            </div>
+                            <%= organization.name %>
 
-        </article>
+                        </a>
 
-        <!-- Organization 2 -->
-        <article class="organization-card">
+                    </h2>
 
-            <img
-                src="/images/greenharvest-logo.png"
-                alt="GreenHarvest Growers logo"
-                class="organization-logo"
-                width="150"
-            >
+                    <p class="organization-description">
 
-            <div class="organization-info">
+                        <%= organization.description %>
 
-                <h2>GreenHarvest Growers</h2>
+                    </p>
 
-                <p class="organization-description">
-                    GreenHarvest Growers is an urban farming collective that
-                    promotes sustainable agriculture, environmental awareness,
-                    and food education programs for families and schools in
-                    underserved neighborhoods.
-                </p>
+                    <p class="organization-email">
 
-                <p class="organization-email">
-                    <strong>Contact Email:</strong>
-                    contact@greenharvest.org
-                </p>
+                        <strong>Contact Email:</strong>
 
-            </div>
+                        <%= organization.contact_email %>
 
-        </article>
+                    </p>
 
-        <!-- Organization 3 -->
-        <article class="organization-card">
+                </div>
 
-            <img
-                src="/images/unityserve-logo.png"
-                alt="UnityServe Volunteers logo"
-                class="organization-logo"
-                width="150"
-            >
+            </article>
 
-            <div class="organization-info">
-
-                <h2>UnityServe Volunteers</h2>
-
-                <p class="organization-description">
-                    UnityServe Volunteers coordinates community service projects,
-                    charity events, and volunteer opportunities that support
-                    local shelters, educational initiatives, and humanitarian
-                    outreach programs.
-                </p>
-
-                <p class="organization-email">
-                    <strong>Contact Email:</strong>
-                    hello@unityserve.org
-                </p>
-
-            </div>
-
-        </article>
-
-        <!-- Organization 4 -->
-        <article class="organization-card">
-
-            <img
-                src="/images/oceanhope-logo.png"
-                alt="OceanHope Foundation logo"
-                class="organization-logo"
-                width="150"
-            >
-
-            <div class="organization-info">
-
-                <h2>OceanHope Foundation</h2>
-
-                <p class="organization-description">
-                    OceanHope Foundation works to protect marine ecosystems
-                    through beach cleanups, ocean conservation education,
-                    and environmental research partnerships with local schools
-                    and universities.
-                </p>
-
-                <p class="organization-email">
-                    <strong>Contact Email:</strong>
-                    support@oceanhope.org
-                </p>
-
-            </div>
-
-        </article>
+        <% }) %>
 
     </section>
 
