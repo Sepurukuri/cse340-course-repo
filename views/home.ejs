@@ -1,22 +1,33 @@
-<%- include("partials/header") %>
+<%- include('partials/header') %>
 
-<section class="hero">
+<main class="home-page">
 
-    <h2>
-        Welcome to Community Service Hub
-    </h2>
+    <section class="hero-section">
 
-    <p>
-        Discover volunteer opportunities, nonprofit organizations,
-        and meaningful service projects that help strengthen
-        communities and improve lives.
-    </p>
+        <div class="hero-content">
 
-</section>
+            <h1>Welcome to Community Service Hub</h1>
 
-<section class="hero">
-    <img src="/images/community-service.png"
-         alt="Community service volunteers">
-</section>
+            <p>
+                Discover volunteer opportunities, nonprofit organizations,
+                and meaningful service projects that help strengthen
+                communities and improve lives.
+            </p>
 
-<%- include("partials/footer") %>
+        </div>
+
+    </section>
+
+    <section class="home-image-section">
+
+        <img
+            src="/images/community-service.png"
+            alt="Community volunteers working together"
+            class="home-hero-image"
+        >
+
+    </section>
+
+</main>
+
+<%- include('partials/footer') %>
