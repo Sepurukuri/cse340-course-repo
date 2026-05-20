@@ -20,6 +20,11 @@ app.engine("ejs", (await import("ejs")).renderFile);
 
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use((req, res, next) => {
+    res.locals.currentYear = new Date().getFullYear();
+    next();
+});
+
 // Routes
 app.get("/", (req, res) => {
     res.render("home", {
@@ -54,11 +59,6 @@ app.get('/categories', async (req, res) => {
         title,
         categories
     });
-});
-
-app.use((req, res, next) => {
-    res.locals.currentYear = new Date().getFullYear();
-    next();
 });
 
 app.listen(PORT, async () => {
