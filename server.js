@@ -56,6 +56,11 @@ app.get('/categories', async (req, res) => {
     });
 });
 
+app.use((req, res, next) => {
+    res.locals.currentYear = new Date().getFullYear();
+    next();
+});
+
 app.listen(PORT, async () => {
   try {
     await testConnection();
