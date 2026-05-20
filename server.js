@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
     res.locals.currentYear = new Date().getFullYear();
+    res.locals.NODE_ENV = process.env.NODE_ENV;
     next();
 });
 
