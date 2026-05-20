@@ -1,8 +1,13 @@
 </main>
 
 <footer>
-    <p>&copy; <%= currentYear %> Community Service Project</p>
-</footer>
+        <p>&copy; <%= new Date().getFullYear() %> CSE 340 Service Network.
+        <% if (NODE_ENV === 'development') { %>
+            (Development mode)
+        <% } %>
+        
+        </p>
+    </footer>
 
 </body>
 </html>
