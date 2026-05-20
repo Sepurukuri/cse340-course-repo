@@ -1,4 +1,3 @@
-// Import model functions
 import {
     getAllOrganizations,
     getOrganizationDetails
@@ -8,7 +7,18 @@ import {
     getProjectsByOrganizationId
 } from '../models/projects.js';
 
-// Define controller functions
+const showOrganizationsPage = async (req, res) => {
+
+    const organizations = await getAllOrganizations();
+
+    const title = 'Our Partner Organizations';
+
+    res.render('organizations', {
+        title,
+        organizations
+    });
+};
+
 const showOrganizationDetailsPage = async (req, res) => {
 
     const organizationId = req.params.id;
@@ -28,7 +38,6 @@ const showOrganizationDetailsPage = async (req, res) => {
     });
 };
 
-// Export controller functions
 export {
     showOrganizationsPage,
     showOrganizationDetailsPage
