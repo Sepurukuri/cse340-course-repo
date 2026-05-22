@@ -32,3 +32,5 @@ router.get('/organization/:id', showOrganizationDetailsPage);
 
 // Error test route
 router.get('/test-error', testErrorPage);
+
+export default router;
