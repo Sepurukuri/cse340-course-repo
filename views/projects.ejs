@@ -37,6 +37,11 @@
                     <%= project.description %>
                 </p>
 
+                <p class="project-date">
+                    📅
+                    <%= new Date(project.project_date).toLocaleDateString() %>
+                </p>
+
                 <p class="project-location">
                     📍 <strong><%= project.location %></strong>
                 </p>
