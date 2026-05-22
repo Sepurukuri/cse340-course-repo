@@ -1,10 +1,17 @@
-import { getAllProjects } from '../models/projects.js';
+import {
+    getUpcomingProjects,
+    getProjectDetails
+} from '../models/projects.js';
+
+const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
 const showProjectsPage = async (req, res) => {
 
-    const projects = await getAllProjects();
+    const projects = await getUpcomingProjects(
+        NUMBER_OF_UPCOMING_PROJECTS
+    );
 
-    const title = 'Community Service Projects';
+    const title = 'Upcoming Service Projects';
 
     res.render('projects', {
         title,
@@ -12,4 +19,23 @@ const showProjectsPage = async (req, res) => {
     });
 };
 
-export { showProjectsPage };
+const showProjectDetailsPage = async (req, res) => {
+
+    const { id } = req.params;
+
+    const project = await getProjectDetails(id);
+
+    if (!project) {
+        return res.status(404).send('Project not found');
+    }
+
+    res.render('project', {
+        title: project.title,
+        project
+    });
+};
+
+export {
+    showProjectsPage,
+    showProjectDetailsPage
+};
