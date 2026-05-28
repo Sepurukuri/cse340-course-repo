@@ -1,3 +1,7 @@
+import flash from './src/middleware/flash.js';
+
+import session from 'express-session';
+
 import 'dotenv/config';
 
 import { testConnection } from './src/models/db.js';
@@ -7,6 +11,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import router from './src/routes.js';
+
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
@@ -38,6 +44,18 @@ app.use((req, res, next) => {
 });
 
 // Middleware to log requests in development mode
+
+// Set up session management
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
+}));
+
+// Use flash message middleware
+app.use(flash);
+
 app.use((req, res, next) => {
 
     if (NODE_ENV === 'development') {
