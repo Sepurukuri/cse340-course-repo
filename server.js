@@ -21,6 +21,10 @@ app.set("view engine", "ejs");
 
 app.engine("ejs", (await import("ejs")).renderFile);
 
+// Allow Express to receive and process common POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Static files
 app.use(express.static(path.join(__dirname, "public")));
 
