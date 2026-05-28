@@ -7,7 +7,9 @@ import {
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
-    organizationValidation
+    organizationValidation,
+    showEditOrganizationForm,
+    processEditOrganizationForm
 } from './controllers/organizations.js';
 
 import {
@@ -44,6 +46,14 @@ router.post('/new-organization', organizationValidation, processNewOrganizationF
 
 // Route for new organization page
 router.get('/new-organization', showNewOrganizationForm);
+
+router.get('/edit-organization/:id', showEditOrganizationForm);
+
+router.post(
+    '/edit-organization/:id',
+    organizationValidation,
+    processEditOrganizationForm
+);
 
 // Error test route
 router.get('/test-error', testErrorPage);
