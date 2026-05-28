@@ -17,6 +17,8 @@ import {
     showProjectDetailsPage,
     showNewProjectForm,
     processNewProjectForm,
+    showEditProjectForm,
+    processEditProjectForm,
     projectValidation
 } from './controllers/projects.js';
 
@@ -90,6 +92,29 @@ router.get('/new-project', showNewProjectForm);
 
 // Route to handle new project form submission
 router.post('/new-project', processNewProjectForm);
+
+// Route for new project page
+router.get('/new-project', showNewProjectForm);
+
+// Route to handle new project form submission
+router.post(
+    '/new-project',
+    projectValidation,
+    processNewProjectForm
+);
+
+// Route to display edit project form
+router.get(
+    '/edit-project/:id',
+    showEditProjectForm
+);
+
+// Route to process edit project form
+router.post(
+    '/edit-project/:id',
+    projectValidation,
+    processEditProjectForm
+);
 
 // Error test route
 router.get('/test-error', testErrorPage);
