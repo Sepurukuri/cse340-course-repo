@@ -26,7 +26,12 @@ const createUser = async (name, email, passwordHash) => {
 
     const result = await db.query(
         query,
-        [name, email, passwordHash, defaultRole]
+        [
+            name,
+            email,
+            passwordHash,
+            defaultRole
+        ]
     );
 
     if (result.rows.length === 0) {
@@ -37,6 +42,7 @@ const createUser = async (name, email, passwordHash) => {
 };
 
 const findUserByEmail = async (email) => {
+
     const query = `
         SELECT
             u.user_id,
@@ -76,6 +82,7 @@ const authenticateUser = async (
     email,
     password
 ) => {
+
     const user =
         await findUserByEmail(email);
 
@@ -83,13 +90,13 @@ const authenticateUser = async (
         return null;
     }
 
-    const passwordValid =
+    const validPassword =
         await verifyPassword(
             password,
             user.password_hash
         );
 
-    if (!passwordValid) {
+    if (!validPassword) {
         return null;
     }
 
@@ -98,8 +105,28 @@ const authenticateUser = async (
     return user;
 };
 
+const getAllUsers = async () => {
+
+    const query = `
+        SELECT
+            u.user_id,
+            u.name,
+            u.email,
+            r.role_name
+        FROM users u
+        JOIN roles r
+            ON u.role_id = r.role_id
+        ORDER BY u.name
+    `;
+
+    const result = await db.query(query);
+
+    return result.rows;
+};
+
 export {
     createUser,
-    authenticateUser
+    authenticateUser,
+    getAllUsers
 };
 

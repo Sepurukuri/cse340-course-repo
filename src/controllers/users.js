@@ -1,28 +1,27 @@
 import bcrypt from 'bcrypt';
 
 import {
-createUser,
-authenticateUser
+    createUser,
+    authenticateUser,
+    getAllUsers
 } from '../models/users.js';
 
-const showUserRegistrationForm = (
-req,
-res
-) => {
-res.render('register', {
-title: 'Register'
-});
+const showUserRegistrationForm = (req, res) => {
+    res.render('register', {
+        title: 'Register'
+    });
 };
 
-const processUserRegistrationForm =
-async (req, res) => {
-const {
-name,
-email,
-password
-} = req.body;
+const processUserRegistrationForm = async (req, res) => {
+
+    const {
+        name,
+        email,
+        password
+    } = req.body;
 
     try {
+
         const salt =
             await bcrypt.genSalt(10);
 
@@ -44,38 +43,28 @@ password
         );
 
         res.redirect('/login');
+
     } catch (error) {
 
-        console.error(
-            'Error registering user:',
-            error
-        );
+        console.error(error);
 
         req.flash(
             'error',
-            'An error occurred during registration.'
+            'Registration failed.'
         );
 
-        res.redirect(
-            '/register'
-        );
+        res.redirect('/register');
     }
 };
 
-const showLoginForm = (
-req,
-res
-) => {
+const showLoginForm = (req, res) => {
 
-res.render('login', {
-    title: 'Login'
-});
-
-
+    res.render('login', {
+        title: 'Login'
+    });
 };
 
-const processLoginForm =
-async (req, res) => {
+const processLoginForm = async (req, res) => {
 
     const {
         email,
@@ -115,88 +104,35 @@ async (req, res) => {
             'Invalid email or password.'
         );
 
-        return res.redirect(
-            '/login'
-        );
+        res.redirect('/login');
 
     } catch (error) {
 
-        console.error(
-            'Error during login:',
-            error
-        );
+        console.error(error);
 
         req.flash(
             'error',
-            'An error occurred during login.'
+            'Login failed.'
         );
 
-        return res.redirect(
-            '/login'
-        );
+        res.redirect('/login');
     }
 };
 
-const processLogout = (
-req,
-res
-) => {
+const processLogout = (req, res) => {
 
-req.session.destroy(
-    (error) => {
-
-        if (error) {
-
-            console.error(
-                error
-            );
-
-            return res.redirect(
-                '/'
-            );
-        }
+    req.session.destroy(() => {
 
         req.flash(
             'success',
             'Logout successful!'
         );
 
-        res.redirect(
-            '/login'
-        );
-    }
-);
-
+        res.redirect('/login');
+    });
 };
 
 const requireLogin = (
-req,
-res,
-next
-) => {
-
-if (
-    !req.session ||
-    !req.session.user
-) {
-
-    req.flash(
-        'error',
-        'You must be logged in to access that page.'
-    );
-
-    return res.redirect(
-        '/login'
-    );
-}
-
-next();
-
-};
-
-const requireRole = (role) => {
-
-return (
     req,
     res,
     next
@@ -209,7 +145,7 @@ return (
 
         req.flash(
             'error',
-            'You must be logged in to access this page.'
+            'You must be logged in to access that page.'
         );
 
         return res.redirect(
@@ -217,52 +153,86 @@ return (
         );
     }
 
-    if (
-        req.session.user.role_name !== role
-    ) {
-
-        req.flash(
-            'error',
-            'You do not have permission to access this page.'
-        );
-
-        return res.redirect(
-            '/'
-        );
-    }
-
     next();
 };
 
+const requireRole = (role) => {
+
+    return (
+        req,
+        res,
+        next
+    ) => {
+
+        if (
+            !req.session ||
+            !req.session.user
+        ) {
+
+            req.flash(
+                'error',
+                'You must be logged in.'
+            );
+
+            return res.redirect('/login');
+        }
+
+        if (
+            req.session.user.role_name !== role
+        ) {
+
+            req.flash(
+                'error',
+                'You do not have permission to access this page.'
+            );
+
+            return res.redirect('/dashboard');
+        }
+
+        next();
+    };
 };
 
-const showDashboard = (
-req,
-res
+const showDashboard = (req, res) => {
+
+    const user =
+        req.session.user;
+
+    res.render(
+        'dashboard',
+        {
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email
+        }
+    );
+};
+
+const showUsersPage = async (
+    req,
+    res
 ) => {
 
-const user =
-    req.session.user;
+    const users =
+        await getAllUsers();
 
-res.render(
-    'dashboard',
-    {
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email
-    }
-);
-
-
+    res.render(
+        'users',
+        {
+            title: 'Users',
+            users
+        }
+    );
 };
 
 export {
-showUserRegistrationForm,
-processUserRegistrationForm,
-showLoginForm,
-processLoginForm,
-processLogout,
-requireLogin,
-requireRole,
-showDashboard
+    showUserRegistrationForm,
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout,
+    requireLogin,
+    requireRole,
+    showDashboard,
+    showUsersPage
 };

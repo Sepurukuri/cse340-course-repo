@@ -101,29 +101,25 @@ flash
 
 app.use((req, res, next) => {
 
-res.locals.currentYear =
-    new Date().getFullYear();
+    res.locals.currentYear =
+        new Date().getFullYear();
 
-res.locals.isLoggedIn =
-    false;
+    res.locals.isLoggedIn = false;
 
-if (
-    req.session &&
-    req.session.user
-) {
+    if (
+        req.session &&
+        req.session.user
+    ) {
+        res.locals.isLoggedIn = true;
+    }
 
-    res.locals.isLoggedIn =
-        true;
-}
+    res.locals.user =
+        req.session.user || null;
 
-res.locals.user =
-    req.session.user || null;
+    res.locals.NODE_ENV =
+        NODE_ENV;
 
-res.locals.NODE_ENV =
-    NODE_ENV;
-
-next();
-
+    next();
 });
 
 //
