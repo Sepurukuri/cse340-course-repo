@@ -24,22 +24,13 @@ const createUser = async (name, email, passwordHash) => {
         RETURNING user_id
     `;
 
-    const queryParams = [
-        name,
-        email,
-        passwordHash,
-        defaultRole
-    ];
-
     const result = await db.query(
         query,
-        queryParams
+        [name, email, passwordHash, defaultRole]
     );
 
     if (result.rows.length === 0) {
-        throw new Error(
-            'Failed to create user'
-        );
+        throw new Error('Failed to create user');
     }
 
     return result.rows[0].user_id;
@@ -48,13 +39,15 @@ const createUser = async (name, email, passwordHash) => {
 const findUserByEmail = async (email) => {
     const query = `
         SELECT
-            user_id,
-            name,
-            email,
-            password_hash,
-            role_id
-        FROM users
-        WHERE email = $1
+            u.user_id,
+            u.name,
+            u.email,
+            u.password_hash,
+            r.role_name
+        FROM users u
+        JOIN roles r
+            ON u.role_id = r.role_id
+        WHERE u.email = $1
     `;
 
     const result = await db.query(

@@ -6,135 +6,224 @@ import 'dotenv/config';
 
 import { testConnection } from './src/models/db.js';
 
-import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import router from './src/routes.js';
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
+const SESSION_SECRET =
+process.env.SESSION_SECRET;
 
-const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+const NODE_ENV =
+process.env.NODE_ENV?.toLowerCase()
+|| 'production';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const PORT =
+process.env.PORT || 3000;
 
-// View engine
-app.set("view engine", "ejs");
+const __filename =
+fileURLToPath(import.meta.url);
 
-app.engine("ejs", (await import("ejs")).renderFile);
+const __dirname =
+path.dirname(__filename);
 
-// Allow Express to receive and process common POST data
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+//
+// View Engine
+//
 
-// Static files
-app.use(express.static(path.join(__dirname, "public")));
+app.set(
+'view engine',
+'ejs'
+);
 
-// Set up session management
-app.use(session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 60 * 60 * 1000 // 1 hour
-    }
-}));
+app.engine(
+'ejs',
+(await import('ejs')).renderFile
+);
 
-// Use flash message middleware
-app.use(flash);
+//
+// Body Parsers
+//
 
-// Global variables available to all EJS templates
+app.use(
+express.urlencoded({
+extended: true
+})
+);
+
+app.use(
+express.json()
+);
+
+//
+// Static Files
+//
+
+app.use(
+express.static(
+path.join(
+__dirname,
+'public'
+)
+)
+);
+
+//
+// Session Management
+//
+
+app.use(
+session({
+secret: SESSION_SECRET,
+resave: false,
+saveUninitialized: true,
+cookie: {
+maxAge:
+60 * 60 * 1000
+}
+})
+);
+
+//
+// Flash Messages
+//
+
+app.use(
+flash
+);
+
+//
+// Global Variables Available to All Views
+//
+
 app.use((req, res, next) => {
 
-    res.locals.currentYear =
-        new Date().getFullYear();
+res.locals.currentYear =
+    new Date().getFullYear();
 
-    res.locals.isLoggedIn = false;
+res.locals.isLoggedIn =
+    false;
 
-    if (
-        req.session &&
-        req.session.user
-    ) {
-        res.locals.isLoggedIn = true;
-    }
+if (
+    req.session &&
+    req.session.user
+) {
 
-    res.locals.NODE_ENV = NODE_ENV;
+    res.locals.isLoggedIn =
+        true;
+}
 
-    next();
+res.locals.user =
+    req.session.user || null;
+
+res.locals.NODE_ENV =
+    NODE_ENV;
+
+next();
+
 });
 
-// Middleware to log requests in development mode
+//
+// Development Logging
+//
+
 app.use((req, res, next) => {
 
-    if (
-        NODE_ENV === 'development'
-    ) {
-        console.log(
-            `${req.method} ${req.url}`
-        );
-    }
+if (
+    NODE_ENV === 'development'
+) {
 
-    next();
+    console.log(
+        `${req.method} ${req.url}`
+    );
+}
+
+next();
+
 });
 
-// Use router
-app.use(router);
+//
+// Routes
+//
 
-// Catch-all route for 404 errors
+app.use(
+router
+);
+
+//
+// 404 Handler
+//
+
 app.use((req, res, next) => {
 
-    const err = new Error(
+const err =
+    new Error(
         'Page Not Found'
     );
 
-    err.status = 404;
+err.status = 404;
 
-    next(err);
+next(err);
+
 });
 
-// Global error handler
+//
+// Global Error Handler
+//
+
 app.use((
-    err,
-    req,
-    res,
-    next
+err,
+req,
+res,
+next
 ) => {
 
-    console.error(
-        'Error occurred:',
-        err.message
-    );
+console.error(
+    'Error occurred:',
+    err.message
+);
 
-    console.error(err.stack);
+console.error(
+    err.stack
+);
 
-    const status =
-        err.status || 500;
+const status =
+    err.status || 500;
 
-    const template =
-        status === 404
-            ? '404'
-            : '500';
+const template =
+    status === 404
+        ? '404'
+        : '500';
 
-    res.status(status).render(
-        `errors/${template}`,
-        {
-            title:
-                status === 404
-                    ? 'Page Not Found'
-                    : 'Server Error',
+res.status(status).render(
+    `errors/${template}`,
+    {
+        title:
+            status === 404
+                ? 'Page Not Found'
+                : 'Server Error',
 
-            error: err.message,
-            stack: err.stack
-        }
-    );
+        error:
+            err.message,
+
+        stack:
+            err.stack
+    }
+);
+
+
 });
 
-// Start server
-app.listen(PORT, async () => {
+//
+// Start Server
+//
+
+app.listen(
+PORT,
+async () => {
 
     try {
 
@@ -154,6 +243,7 @@ app.listen(PORT, async () => {
             'Error connecting to the database:',
             error
         );
-
     }
-});
+}
+
+);
