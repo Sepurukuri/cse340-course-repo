@@ -28,6 +28,18 @@
 
     </section>
 
+    <% if (isLoggedIn) { %>
+        <section class="dashboard-link-section">
+
+            <p>
+                <a href="/dashboard">
+                    My Dashboard
+                </a>
+            </p>
+
+        </section>
+    <% } %>
+
 </main>
 
 <%- include('partials/footer') %>

@@ -99,7 +99,7 @@ const processLoginForm =
                 );
 
                 return res.redirect(
-                    '/'
+                    '/dashboard'
                 );
             }
 
@@ -152,11 +152,51 @@ const processLogout = (
     );
 };
 
+const requireLogin = (
+    req,
+    res,
+    next
+) => {
+    if (
+        !req.session ||
+        !req.session.user
+    ) {
+        req.flash(
+            'error',
+            'You must be logged in to access that page.'
+        );
+
+        return res.redirect(
+            '/login'
+        );
+    }
+
+    next();
+};
+
+const showDashboard = (
+    req,
+    res
+) => {
+    const user =
+        req.session.user;
+
+    res.render(
+        'dashboard',
+        {
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email
+        }
+    );
+};
+
 export {
     showUserRegistrationForm,
     processUserRegistrationForm,
     showLoginForm,
     processLoginForm,
-    processLogout
+    processLogout,
+    requireLogin,
+    showDashboard
 };
-

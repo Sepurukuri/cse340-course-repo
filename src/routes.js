@@ -39,7 +39,9 @@ import {
     processUserRegistrationForm,
     showLoginForm,
     processLoginForm,
-    processLogout
+    processLogout,
+    requireLogin,
+    showDashboard
 } from './controllers/users.js';
 
 import { testErrorPage } from './controllers/errors.js';
@@ -166,21 +168,6 @@ router.post(
     processUserRegistrationForm
 );
 
-// Error test route
-router.get('/test-error', testErrorPage);
-
-
-// User registration routes
-router.get(
-    '/register',
-    showUserRegistrationForm
-);
-
-router.post(
-    '/register',
-    processUserRegistrationForm
-);
-
 // User login routes
 router.get(
     '/login',
@@ -197,5 +184,17 @@ router.get(
     processLogout
 );
 
+// Protected dashboard route
+router.get(
+    '/dashboard',
+    requireLogin,
+    showDashboard
+);
+
+// Error test route
+router.get(
+    '/test-error',
+    testErrorPage
+);
 
 export default router;
