@@ -1,51 +1,162 @@
 import bcrypt from 'bcrypt';
-import { createUser } from '../models/users.js';
 
-const showUserRegistrationForm = (req, res) => {
+import {
+    createUser,
+    authenticateUser
+} from '../models/users.js';
+
+const showUserRegistrationForm = (
+    req,
+    res
+) => {
     res.render('register', {
         title: 'Register'
     });
 };
 
-const processUserRegistrationForm = async (req, res) => {
-    const { name, email, password } = req.body;
-
-    try {
-        // Generate salt and hash password
-        const salt = await bcrypt.genSalt(10);
-        const passwordHash = await bcrypt.hash(password, salt);
-
-        // Save user to database
-        const userId = await createUser(
+const processUserRegistrationForm =
+    async (req, res) => {
+        const {
             name,
             email,
-            passwordHash
-        );
+            password
+        } = req.body;
 
-        console.log(`User created with ID: ${userId}`);
+        try {
+            const salt =
+                await bcrypt.genSalt(10);
 
-        req.flash(
-            'success',
-            'Registration successful! Please log in.'
-        );
+            const passwordHash =
+                await bcrypt.hash(
+                    password,
+                    salt
+                );
 
-        res.redirect('/');
-    } catch (error) {
-        console.error(
-            'Error registering user:',
-            error
-        );
+            await createUser(
+                name,
+                email,
+                passwordHash
+            );
 
-        req.flash(
-            'error',
-            'An error occurred during registration. Please try again.'
-        );
+            req.flash(
+                'success',
+                'Registration successful! Please log in.'
+            );
 
-        res.redirect('/register');
-    }
+            res.redirect('/login');
+        } catch (error) {
+            console.error(
+                'Error registering user:',
+                error
+            );
+
+            req.flash(
+                'error',
+                'An error occurred during registration.'
+            );
+
+            res.redirect(
+                '/register'
+            );
+        }
+    };
+
+const showLoginForm = (
+    req,
+    res
+) => {
+    res.render('login', {
+        title: 'Login'
+    });
+};
+
+const processLoginForm =
+    async (req, res) => {
+        const {
+            email,
+            password
+        } = req.body;
+
+        try {
+            const user =
+                await authenticateUser(
+                    email,
+                    password
+                );
+
+            if (user) {
+                req.session.user =
+                    user;
+
+                req.flash(
+                    'success',
+                    'Login successful!'
+                );
+
+                console.log(
+                    'User logged in:',
+                    user
+                );
+
+                return res.redirect(
+                    '/'
+                );
+            }
+
+            req.flash(
+                'error',
+                'Invalid email or password.'
+            );
+
+            res.redirect('/login');
+        } catch (error) {
+            console.error(
+                'Error during login:',
+                error
+            );
+
+            req.flash(
+                'error',
+                'An error occurred during login.'
+            );
+
+            res.redirect('/login');
+        }
+    };
+
+const processLogout = (
+    req,
+    res
+) => {
+    req.session.destroy(
+        (error) => {
+            if (error) {
+                console.error(
+                    error
+                );
+
+                return res.redirect(
+                    '/'
+                );
+            }
+
+            req.flash(
+                'success',
+                'Logout successful!'
+            );
+
+            res.redirect(
+                '/login'
+            );
+        }
+    );
 };
 
 export {
     showUserRegistrationForm,
-    processUserRegistrationForm
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout
 };
+

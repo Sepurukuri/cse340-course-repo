@@ -36,7 +36,10 @@ import {
 
 import {
     showUserRegistrationForm,
-    processUserRegistrationForm
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout
 } from './controllers/users.js';
 
 import { testErrorPage } from './controllers/errors.js';
@@ -165,5 +168,34 @@ router.post(
 
 // Error test route
 router.get('/test-error', testErrorPage);
+
+
+// User registration routes
+router.get(
+    '/register',
+    showUserRegistrationForm
+);
+
+router.post(
+    '/register',
+    processUserRegistrationForm
+);
+
+// User login routes
+router.get(
+    '/login',
+    showLoginForm
+);
+
+router.post(
+    '/login',
+    processLoginForm
+);
+
+router.get(
+    '/logout',
+    processLogout
+);
+
 
 export default router;
