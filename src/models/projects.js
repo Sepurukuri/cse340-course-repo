@@ -255,6 +255,23 @@ const updateProject = async (
     return result.rows[0].project_id;
 };
 
+const getVolunteerActivity = async () => {
+    const query = `
+        SELECT
+            u.name AS user_name,
+            p.title AS project_title
+        FROM project_volunteer pv
+        JOIN users u
+            ON pv.user_id = u.user_id
+        JOIN project p
+            ON pv.project_id = p.project_id
+        ORDER BY u.name;
+    `;
+
+    const result = await db.query(query);
+    return result.rows;
+};
+
 export {
     getAllProjects,
     getProjectsByOrganizationId,
@@ -265,5 +282,6 @@ export {
     addVolunteer,
     removeVolunteer,
     isVolunteer,
-    getVolunteerProjectsByUserId
+    getVolunteerProjectsByUserId,
+    getVolunteerActivity
 };

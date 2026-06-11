@@ -7,7 +7,8 @@ import {
 } from '../models/users.js';
 
 import {
-    getVolunteerProjectsByUserId
+    getVolunteerProjectsByUserId,
+    getVolunteerActivity
 } from '../models/projects.js';
 
 const showUserRegistrationForm = (req, res) => {
@@ -197,8 +198,10 @@ const requireRole = (role) => {
     };
 };
 
-const showDashboard =
-async (req, res) => {
+const showDashboard = async (
+    req,
+    res
+) => {
 
     const user =
         req.session.user;
@@ -208,13 +211,24 @@ async (req, res) => {
             user.user_id
         );
 
+    let volunteerActivity = [];
+
+    if (
+        user.role_name === 'admin'
+    ) {
+
+        volunteerActivity =
+            await getVolunteerActivity();
+    }
+
     res.render(
         'dashboard',
         {
             title: 'Dashboard',
             name: user.name,
             email: user.email,
-            volunteerProjects
+            volunteerProjects,
+            volunteerActivity
         }
     );
 };

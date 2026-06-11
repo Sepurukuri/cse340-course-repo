@@ -2,15 +2,67 @@
 
 <main>
 
-    <h1><%= title %></h1>
+ <h1>Dashboard</h1>
 
-    <h2>Dashboard</h2>
+<p>Name: <%= name %></p>
 
-    <p>Name: <%= name %></p>
+<p>Email: <%= email %></p>
 
-    <p>Email: <%= email %></p>
+<% if (
+    user &&
+    user.role_name === 'admin'
+) { %>
 
-    <h2>My Volunteer Projects</h2>
+    <p>
+        <a href="/users">
+            View All Users
+        </a>
+    </p>
+
+    <h2>
+        Volunteer Activity
+    </h2>
+
+    <% if (
+        volunteerActivity &&
+        volunteerActivity.length > 0
+    ) { %>
+
+        <ul>
+
+            <% volunteerActivity.forEach(activity => { %>
+
+                <li>
+
+                    <strong>
+                        <%= activity.user_name %>
+                    </strong>
+
+                    volunteered for
+
+                    <strong>
+                        <%= activity.project_title %>
+                    </strong>
+
+                </li>
+
+            <% }) %>
+
+        </ul>
+
+    <% } else { %>
+
+        <p>
+            No volunteer activity yet.
+        </p>
+
+    <% } %>
+
+<% } %>
+
+<h2>
+    My Volunteer Projects
+</h2>
 
 <% if (
     volunteerProjects &&
@@ -23,18 +75,12 @@
 
             <li>
 
-                <a
-                    href="/project/<%= project.project_id %>"
-                >
+                <a href="/project/<%= project.project_id %>">
                     <%= project.title %>
                 </a>
 
-                -
-                <%= project.location %>
-
                 <a
-                    href="/project/<%= project.project_id %>/unvolunteer"
-                >
+                    href="/project/<%= project.project_id %>/unvolunteer">
                     Remove
                 </a>
 
@@ -51,16 +97,6 @@
     </p>
 
 <% } %>
-
-    <% if (user && user.role_name === 'admin') { %>
-
-        <p>
-            <a href="/users">
-                View All Users
-            </a>
-        </p>
-
-    <% } %>
 
 </main>
 
