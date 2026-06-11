@@ -1,48 +1,110 @@
 <%- include('partials/header') %>
 
-<main>
+<h1>Dashboard</h1>
 
- <h1>Dashboard</h1>
+<p>
+    <strong>Name:</strong>
+    <%= name %>
+</p>
 
-<p>Name: <%= name %></p>
-
-<p>Email: <%= email %></p>
+<p>
+    <strong>Email:</strong>
+    <%= email %>
+</p>
 
 <% if (
     user &&
     user.role_name === 'admin'
 ) { %>
 
-    <p>
-        <a href="/users">
-            View All Users
-        </a>
-    </p>
+    <section>
+
+        <h2>Administration</h2>
+
+        <p>
+            <a href="/users">
+                View All Users
+            </a>
+        </p>
+
+        <h2>
+            Volunteer Activity
+        </h2>
+
+        <% if (
+            volunteerActivity &&
+            volunteerActivity.length > 0
+        ) { %>
+
+            <ul>
+
+                <% volunteerActivity.forEach(activity => { %>
+
+                    <li>
+
+                        <strong>
+                            <%= activity.user_name %>
+                        </strong>
+
+                        volunteered for
+
+                        <strong>
+                            <%= activity.project_title %>
+                        </strong>
+
+                    </li>
+
+                <% }) %>
+
+            </ul>
+
+        <% } else { %>
+
+            <p>
+                No volunteer activity yet.
+            </p>
+
+        <% } %>
+
+    </section>
+
+<% } %>
+
+<section>
 
     <h2>
-        Volunteer Activity
+        My Volunteer Projects
     </h2>
 
     <% if (
-        volunteerActivity &&
-        volunteerActivity.length > 0
+        volunteerProjects &&
+        volunteerProjects.length > 0
     ) { %>
 
         <ul>
 
-            <% volunteerActivity.forEach(activity => { %>
+            <% volunteerProjects.forEach(project => { %>
 
                 <li>
 
-                    <strong>
-                        <%= activity.user_name %>
-                    </strong>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>
 
-                    volunteered for
+                    <% if (project.location) { %>
+                        - <%= project.location %>
+                    <% } %>
 
-                    <strong>
-                        <%= activity.project_title %>
-                    </strong>
+                    <% if (project.project_date) { %>
+                        (
+                        <%= new Date(project.project_date).toLocaleDateString() %>
+                        )
+                    <% } %>
+
+                    |
+                    <a href="/project/<%= project.project_id %>/unvolunteer">
+                        Remove Volunteer Signup
+                    </a>
 
                 </li>
 
@@ -53,51 +115,11 @@
     <% } else { %>
 
         <p>
-            No volunteer activity yet.
+            You are not currently volunteering for any projects.
         </p>
 
     <% } %>
 
-<% } %>
-
-<h2>
-    My Volunteer Projects
-</h2>
-
-<% if (
-    volunteerProjects &&
-    volunteerProjects.length > 0
-) { %>
-
-    <ul>
-
-        <% volunteerProjects.forEach(project => { %>
-
-            <li>
-
-                <a href="/project/<%= project.project_id %>">
-                    <%= project.title %>
-                </a>
-
-                <a
-                    href="/project/<%= project.project_id %>/unvolunteer">
-                    Remove
-                </a>
-
-            </li>
-
-        <% }) %>
-
-    </ul>
-
-<% } else { %>
-
-    <p>
-        You are not volunteering for any projects.
-    </p>
-
-<% } %>
-
-</main>
+</section>
 
 <%- include('partials/footer') %>
