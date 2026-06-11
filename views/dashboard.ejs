@@ -10,6 +10,48 @@
 
     <p>Email: <%= email %></p>
 
+    <h2>My Volunteer Projects</h2>
+
+<% if (
+    volunteerProjects &&
+    volunteerProjects.length > 0
+) { %>
+
+    <ul>
+
+        <% volunteerProjects.forEach(project => { %>
+
+            <li>
+
+                <a
+                    href="/project/<%= project.project_id %>"
+                >
+                    <%= project.title %>
+                </a>
+
+                -
+                <%= project.location %>
+
+                <a
+                    href="/project/<%= project.project_id %>/unvolunteer"
+                >
+                    Remove
+                </a>
+
+            </li>
+
+        <% }) %>
+
+    </ul>
+
+<% } else { %>
+
+    <p>
+        You are not volunteering for any projects.
+    </p>
+
+<% } %>
+
     <% if (user && user.role_name === 'admin') { %>
 
         <p>

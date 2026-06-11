@@ -2,7 +2,10 @@ import {
     getUpcomingProjects,
     getProjectDetails,
     createProject,
-    updateProject
+    updateProject,
+    addVolunteer,
+    removeVolunteer,
+    isVolunteer
 } from '../models/projects.js';
 
 import { getCategoriesByProjectId } from '../models/categories.js';
@@ -61,23 +64,47 @@ const showProjectsPage = async (req, res) => {
     });
 };
 
-const showProjectDetailsPage = async (req, res) => {
+const showProjectDetailsPage = async (
+    req,
+    res
+) => {
 
     const { id } = req.params;
 
-    const project = await getProjectDetails(id);
+    const project =
+        await getProjectDetails(id);
 
     if (!project) {
-        return res.status(404).send('Project not found');
+        return res
+            .status(404)
+            .send('Project not found');
     }
 
-    const categories = await getCategoriesByProjectId(id);
+    const categories =
+        await getCategoriesByProjectId(id);
 
-    res.render('project', {
-        title: project.title,
-        project,
-        categories
-    });
+    let volunteering = false;
+
+    if (
+        req.session.user
+    ) {
+
+        volunteering =
+            await isVolunteer(
+                id,
+                req.session.user.user_id
+            );
+    }
+
+    res.render(
+        'project',
+        {
+            title: project.title,
+            project,
+            categories,
+            volunteering
+        }
+    );
 };
 
 const showNewProjectForm = async (req, res) => {
@@ -202,6 +229,54 @@ const processEditProjectForm = async (req, res) => {
     res.redirect(`/project/${projectId}`);
 };
 
+const volunteerForProject =
+async (req, res) => {
+
+    const projectId =
+        req.params.id;
+
+    const userId =
+        req.session.user.user_id;
+
+    await addVolunteer(
+        projectId,
+        userId
+    );
+
+    req.flash(
+        'success',
+        'You are now volunteering for this project.'
+    );
+
+    res.redirect(
+        `/project/${projectId}`
+    );
+};
+
+const unVolunteerForProject =
+async (req, res) => {
+
+    const projectId =
+        req.params.id;
+
+    const userId =
+        req.session.user.user_id;
+
+    await removeVolunteer(
+        projectId,
+        userId
+    );
+
+    req.flash(
+        'success',
+        'Volunteer signup removed.'
+    );
+
+    res.redirect(
+        `/project/${projectId}`
+    );
+};
+
 export {
     showProjectsPage,
     showProjectDetailsPage,
@@ -209,5 +284,7 @@ export {
     processNewProjectForm,
     showEditProjectForm,
     processEditProjectForm,
+    volunteerForProject,
+    unVolunteerForProject,
     projectValidation
 };

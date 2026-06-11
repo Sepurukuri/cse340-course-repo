@@ -89,6 +89,89 @@ const getProjectDetails = async (id) => {
     return result.rows[0];
 };
 
+const addVolunteer = async (
+    projectId,
+    userId
+) => {
+
+    const query = `
+        INSERT INTO project_volunteer (
+            project_id,
+            user_id
+        )
+        VALUES ($1, $2)
+        ON CONFLICT DO NOTHING;
+    `;
+
+    await db.query(
+        query,
+        [projectId, userId]
+    );
+};
+
+const removeVolunteer = async (
+    projectId,
+    userId
+) => {
+
+    const query = `
+        DELETE FROM project_volunteer
+        WHERE project_id = $1
+        AND user_id = $2;
+    `;
+
+    await db.query(
+        query,
+        [projectId, userId]
+    );
+};
+
+const isVolunteer = async (
+    projectId,
+    userId
+) => {
+
+    const query = `
+        SELECT *
+        FROM project_volunteer
+        WHERE project_id = $1
+        AND user_id = $2;
+    `;
+
+    const result =
+        await db.query(
+            query,
+            [projectId, userId]
+        );
+
+    return result.rows.length > 0;
+};
+
+const getVolunteerProjectsByUserId =
+async (userId) => {
+
+    const query = `
+        SELECT
+            p.project_id,
+            p.title,
+            p.project_date,
+            p.location
+        FROM project p
+        JOIN project_volunteer pv
+            ON p.project_id = pv.project_id
+        WHERE pv.user_id = $1
+        ORDER BY p.project_date;
+    `;
+
+    const result =
+        await db.query(
+            query,
+            [userId]
+        );
+
+    return result.rows;
+};
+
 const createProject = async (
     title,
     description,
@@ -178,5 +261,9 @@ export {
     getUpcomingProjects,
     getProjectDetails,
     createProject,
-    updateProject
+    updateProject,
+    addVolunteer,
+    removeVolunteer,
+    isVolunteer,
+    getVolunteerProjectsByUserId
 };
